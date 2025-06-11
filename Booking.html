@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Book a Table - Delicious Bites</title>
+  <link rel="stylesheet" href="Restaurant.css" />
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">Delicious Bites</div>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#menu">Menu</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="Booking.html">Book</a></li>
+      <li><a href="cart.html">View Cart</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="contact-section">
+    <h2>Your Order</h2>
+    <div id="order-items"></div>
+
+    <h2>Book a Table</h2>
+    <form action="thankyou.html" method="POST" class="booking-form">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required />
+
+      <label for="date">Date:</label>
+      <input type="date" id="date" name="date" required />
+
+      <label for="time">Time:</label>
+      <input type="time" id="time" name="time" required />
+
+      <label for="guests">Guests:</label>
+      <input type="number" id="guests" name="guests" min="1" required />
+
+      <!-- Hidden field to include order in form -->
+      <input type="hidden" name="orderDetails" id="orderDetails" />
+
+      <p>You’ll be redirected to the homepage after booking.</p>
+      <button type="submit">Book Now</button>
+    </form>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Delicious Bites. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const orderItems = JSON.parse(sessionStorage.getItem('order')) || [];
+    const orderDiv = document.getElementById('order-items');
+    const orderInput = document.getElementById('orderDetails');
+
+    if (orderItems.length === 0) {
+      orderDiv.innerHTML = "<p>Your order is empty.</p>";
+      orderInput.value = "No items ordered.";
+    } else {
+      orderDiv.innerHTML = "";
+      let total = 0;
+      let orderSummary = "";
+
+      orderItems.forEach(item => {
+        orderDiv.innerHTML += `<p>${item.item} - $${item.price.toFixed(2)}</p>`;
+        total += item.price;
+        orderSummary += `${item.item} - $${item.price.toFixed(2)}\n`;
+      });
+
+      orderDiv.innerHTML += `<p><strong>Total: $${total.toFixed(2)}</strong></p>`;
+      orderSummary += `Total: $${total.toFixed(2)}`;
+      orderInput.value = orderSummary;
+      
+  </script>
+
+</body>
+</html>

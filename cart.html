@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Your Cart - Delicious Bites</title>
+  <link rel="stylesheet" href="Restaurant.css" />
+  <style>
+    body {
+      background-color: #fff8f0;
+      font-family: 'Segoe UI', sans-serif;
+      padding-top: 80px; /* For fixed nav */
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1em;
+      color: #8b0000;
+    }
+
+    .cart-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 2em;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ddd;
+      padding: 1em 0;
+    }
+
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+
+    .cart-item-name {
+      font-size: 1.1em;
+    }
+
+    .cart-item-price {
+      font-weight: bold;
+      color: #8b0000;
+    }
+
+    .cart-total {
+      text-align: right;
+      font-size: 1.3em;
+      margin-top: 1.5em;
+      font-weight: bold;
+      color: #8b0000;
+    }
+
+    .checkout-btn {
+      display: block;
+      margin: 2em auto 0;
+      padding: 12px 30px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .checkout-btn:hover {
+      background-color: #218838;
+    }
+
+    .empty-message {
+      text-align: center;
+      font-size: 1.2em;
+      color: #777;
+    }
+
+    footer {
+      background-color: #222;
+      color: white;
+      text-align: center;
+      padding: 1em;
+      margin-top: 60px;
+    }
+
+    
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="logo">Delicious Bites</div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#menu">Menu</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="Booking.html">Book</a></li>
+      <li><a href="cart.html">View Cart</a></li>
+    </ul>
+  </nav>
+
+  <!-- Cart Content -->
+  <h1>Your Order</h1>
+  <div class="cart-container" id="cart-items"></div>
+  <div class="cart-total" id="total"></div>
+  <button class="checkout-btn" onclick="checkout()">Checkout</button>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Delicious Bites. All rights reserved.</p>
+  </footer>
+
+  <!-- Script -->
+  <script>
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartContainer = document.getElementById('cart-items');
+    const totalDisplay = document.getElementById('total');
+    let total = 0;
+
+    if (cart.length === 0) {
+      cartContainer.innerHTML = `<p class="empty-message">Your cart is empty.</p>`;
+      totalDisplay.style.display = "none";
+      document.querySelector(".checkout-btn").style.display = "none";
+    } else {
+      cart.forEach(item => {
+        cartContainer.innerHTML += `
+          <div class="cart-item">
+            <span class="cart-item-name">${item.item}</span>
+            <span class="cart-item-price">$${item.price.toFixed(2)}</span>
+          </div>`;
+        total += item.price;
+      });
+      totalDisplay.textContent = `Total: $${total.toFixed(2)}`;
+    }
+
+    function checkout() {
+      sessionStorage.setItem('order', JSON.stringify(cart));
+      localStorage.removeItem('cart');
+      window.location.href = "Booking.html";
+    }
+  </script>
+</body>
+</html>
